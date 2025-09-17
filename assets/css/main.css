@@ -1,17 +1,69 @@
+@font-face {
+  font-family: "Noto Serif Custom";
+  src: url("../fonts/Noto_Serif/NotoSerif-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Serif Custom";
+  src: url("../fonts/Noto_Serif/NotoSerif-italic-Variable.woff2")
+    format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Sans Custom";
+  src: url("../fonts/Funnel_Sans/FunnelSans-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Sans Custom";
+  src: url("../fonts/Funnel_Sans/FunnelSans-italic-Variable.woff2")
+    format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --color-primary: #fff; /* White background */
   --color-secondary: #000; /* Black accents */
   --color-accent-1: #ff0051; /* Pink accents  */
   --color-accent-2: #260073; /* Darker pink links and buttons */
+  --font-antiqua: 1rem/1.4 "Noto Serif Custom", serif;
+  --font-antiqua-italic: italic 1rem/1.4 "Noto Serif Custom", serif;
+  --font-grotesk: 1rem/1.4 "Funnel Sans Custom", sans-serif;
+  --font-grotesk-italic: italic 1rem/1.4 "Funnel Sans Custom", sans-serif;
 }
 
 html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font: var(--font-grotesk);
   line-height: 1.5;
   color: var(--color-secondary);
   background: var(--color-primary);
   font-size: 16px;
+}
+body {
+  font: var(--font-grotesk);
+}
+
+nav {
+  background-color: red;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 0 5vh;
+  display: grid;
+  justify-content: space-between;
+  z-index: 100;
+  grid-template-columns: repeat(2, auto);
 }
 
 /* Main centered container with width 90vw up to 1600px */
@@ -39,13 +91,11 @@ header {
 .header-row {
   position: sticky;
   top: 0;
-  z-index: 50;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--color-primary);
+  background: #fff;
   padding: 0.5rem 1rem;
+  z-index: 50;
 }
+
 .nav {
   display: flex;
   gap: 0.75rem;

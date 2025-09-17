@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Layout con header, main y footer</title>
+    <style>
+      /* Base resets */
+      :root {
+        --vw-width: 90vw;
+        --max-width: 1600px;
+        --content-width: min(var(--vw-width), var(--max-width));
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+        background: #fafafa;
+        color: #111;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Layout wrappers for header, main and footer */
+      /* The containers (header/footer/main) are centered with a responsive inner wrapper */
+      header,
+      main,
+      footer {
+        width: 100%;
+        display: flex;
+        justify-content: center; /* center the inner content wrapper */
+      }
+
+      /* Inner content wrapper: responsive 90vw with max 1600px */
+      .inner {
+        width: var(--vw-width); /* responsive 90vw */
+        max-width: var(
+          --max-width
+        ); /* max 1600px for header/main/footer content */
+        position: relative;
+      }
+
+      /* Sticky header and sticky footer elements to keep logo/menu visible on scroll.
+     The header/footer themselves are max-width-limited visually by the inner wrapper,
+     but the logo & menu have special rule to be 90vw without max-width (no max). */
+
+      /* Header styles */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.9),
+          rgba(255, 255, 255, 0.8)
+        );
+        backdrop-filter: blur(4px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      /* Header inner: keeps header visually constrained to 90vw / max1600 */
+      header .inner {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      /* Logo and menu must be responsive to 90vw but WITHOUT max-width and remain visible when scrolling.
+     We implement them as separate elements that are fixed (or sticky) and sized to 90vw (no max). */
+
+      /* Logo */
+      .logo {
+        /* 90vw but no max-width */
+        width: 90vw;
+        max-width: none; /* explicitly remove max */
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        pointer-events: auto;
+        /* ensure logo is always visible on scroll */
+        position: sticky;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 8px; /* slight offset inside header */
+        z-index: 50;
+        height: 48px;
+      }
+
+      .logo img {
+        height: 40px;
+        width: auto;
+        display: block;
+      }
+
+      /* Hamburger menu: also 90vw without max-width and always visible */
+      .hamburger {
+        width: 90vw;
+        max-width: none;
+        position: sticky;
+        right: 0;
+        transform: none;
+        top: 8px;
+        z-index: 55;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        pointer-events: auto;
+      }
+
+      /* Simple hamburger button styling */
+      .hamburger button {
+        background: transparent;
+        border: 0;
+        padding: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .hamburger .bar {
+        width: 24px;
+        height: 2px;
+        background: #111;
+        display: block;
+        position: relative;
+      }
+
+      .hamburger .bar::before,
+      .hamburger .bar::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #111;
+      }
+
+      .hamburger .bar::before {
+        top: -7px;
+      }
+      .hamburger .bar::after {
+        top: 7px;
+      }
+
+      /* Main area */
+      main {
+        flex: 1 0 auto;
+        padding-top: 24px;
+        padding-bottom: 24px;
+        display: flex;
+        justify-content: center;
+      }
+
+      main .inner {
+        /* main content width: responsive 90vw with max 1600px */
+        padding: 16px;
+        /* Reuse --content-width if needed in JS/CSS calculations */
+      }
+
+      .content {
+        width: var(--content-width);
+        margin: 0 auto;
+        background: #fff;
+        padding: 24px;
+        border-radius: 8px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+        position: relative;
+        overflow: visible;
+      }
+
+      /* The .line element must always be 105% of the content width.
+     and .bild must be 110% of the content width.
+     We achieve this by using transform scale on a full-width child, and centering it.
+     Using percentages relative to the content box: width:105% / 110% works because
+     those percentages are relative to the nearest containing block's width (the .content). */
+
+      /* container keeps layout and centering */
+      .line-wrapper {
+        width: 100%;
+        /* content width = min(90vw,1600px); line width = 1.05 * content width
+     vertical projection ≈ lineWidth * sin(8deg) + lineHeight * cos(8deg)
+     sin8° ≈ 0.1392, cos8° ≈ 0.9903
+     So approximate height = 1.05 * min(90vw,1600px) * 0.1392 + 4px * 0.9903
+  */
+        height: calc((1.05 * min(90vw, 1600px) * 0.1392) + (4px * 0.9903));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+        margin-top: 12px;
+        margin-bottom: 12px;
+      }
+
+      .line {
+        width: 105%;
+        height: 4px;
+        background: linear-gradient(90deg, #ff8a00, #e52e71);
+        border-radius: 2px;
+        transform-origin: center;
+        transform: rotate(8deg);
+        display: block;
+      }
+      .bild {
+        width: 110%;
+        margin-left: calc((100% - 110%) / 2); /* center the wider element */
+        height: 200px;
+        background: linear-gradient(135deg, #ddeeff, #bcd8ff);
+        border-radius: 8px;
+        margin-top: 18px;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #123;
+        font-weight: 600;
+      }
+
+      /* Footer */
+      footer {
+        position: sticky;
+        bottom: 0;
+        z-index: 30;
+        background: #fff;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      footer .inner {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Accessibility & responsive adjustments */
+      @media (min-width: 1200px) {
+        .logo img {
+          height: 48px;
+        }
+      }
+
+      /* Small screens: reduce paddings */
+      @media (max-width: 420px) {
+        header .inner,
+        footer .inner {
+          height: 56px;
+        }
+        .content {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header wrapper -->
+    <header>
+      <!-- Inner constrained wrapper (90vw, max 1600px) -->
+      <div class="inner">
+        <!-- Logo - 90vw without max-width, sticky to remain visible on scroll -->
+        <div class="logo" aria-label="Site logo">
+          <!-- Example SVG logo; replace with your asset -->
+          <img
+            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'><rect width='120' height='40' rx='6' fill='%23007acc'/><text x='12' y='26' font-family='Arial' font-size='16' fill='white'>LOGO</text></svg>"
+            alt="Logo"
+          />
+        </div>
+
+        <!-- Hamburger menu - 90vw without max-width, sticky to remain visible on scroll -->
+        <nav class="hamburger" aria-label="Main menu">
+          <button
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+            title="Open menu"
+          >
+            <span class="bar" aria-hidden="true"></span>
+            <span
+              class="sr-only"
+              style="
+                position: absolute;
+                left: -9999px;
+                top: auto;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+              "
+              >Menu</span
+            >
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main style="height: 4000px">
+      <div class="inner">
+        <!-- Main content box constrained to 90vw and max 1600px -->
+        <section class="content" role="main">
+          <h1>Contenido principal</h1>
+          <p>Ejemplo de contenido dentro del main.</p>
+
+          <!-- Element that must be always 105% of the content principal -->
+
+          <div class="line-wrapper" aria-hidden="true">
+            <div class="line"></div>
+          </div>
+
+          <p>Más contenido entre los elementos especiales.</p>
+
+          <!-- Element that must be 110% of the content principal -->
+          <div class="bild">BILD (110% width)</div>
+
+          <p>Resto del contenido...</p>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="inner">
+        <div style="text-align: center">
+          &copy; <span id="year"></span> Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi
+          sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+          Mi sitio Mi sitio Mi sitio Mi sitio Mi sitio
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // JS small helper to set year - purely optional
+      // Keep comments in English as requested.
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // Basic accessible toggle for hamburger (no panel implemented here).
+      // This demonstrates how you might toggle aria-expanded.
+      const btn = document.querySelector(".hamburger button");
+      if (btn) {
+        btn.addEventListener("click", () => {
+          const expanded = btn.getAttribute("aria-expanded") === "true";
+          btn.setAttribute("aria-expanded", String(!expanded));
+          // Here you would open/close your mobile menu panel.
+        });
+      }
+    </script>
+  </body>
+</html>
