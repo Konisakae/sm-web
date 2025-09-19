@@ -33,25 +33,33 @@
 }
 
 :root {
-  --color-primary: #fff; /* White background */
-  --color-secondary: #000; /* Black accents */
-  --color-accent-1: #ff0051; /* Pink accents  */
-  --color-accent-2: #260073; /* Darker pink links and buttons */
+  --color-primary: #fff;
+  /* White background */
+  --color-secondary: #000;
+  /* Black accents */
+  --color-accent-1: #ff0051;
+  /* Pink accents  */
+  --color-accent-2: #260073;
+  /* Darker pink links and buttons */
   --font-antiqua: 1rem/1.4 "Noto Serif Custom", serif;
   --font-antiqua-italic: italic 1rem/1.4 "Noto Serif Custom", serif;
   --font-grotesk: 1rem/1.4 "Funnel Sans Custom", sans-serif;
   --font-grotesk-italic: italic 1rem/1.4 "Funnel Sans Custom", sans-serif;
 }
 
-html {
+html,
+body {
   font: var(--font-grotesk);
   line-height: 1.5;
   color: var(--color-secondary);
-  background: var(--color-primary);
+  background: var(--color-s);
   font-size: 16px;
 }
+
 body {
-  font: var(--font-grotesk);
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto;
 }
 
 nav {
@@ -88,6 +96,7 @@ footer {
 header {
   position: relative;
 }
+
 .header-row {
   position: sticky;
   top: 0;
