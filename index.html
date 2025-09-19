@@ -4,21 +4,70 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>schrittmacher</title>
+    <link
+      rel="preload"
+      href="./assets/fonts/Noto_Serif/NotoSerif-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="./assets/fonts/Noto_Serif/NotoSerif-italic-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="./assets/fonts/Funnel_Sans/FunnelSans-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="./assets/fonts/Funnel_Sans/FunnelSans-italic-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="stylesheet" href="./assets/css/reset.css" />
     <link rel="stylesheet" href="./assets/css/main.css" />
   </head>
+
   <body>
     <nav>
-      <div>Logo</div>
+      <a id="logo" class="logo" href="#" aria-label="Start">
+        <img src="./assets/images/schrittmacher-logo.svg" alt="Firmenlogo" />
+      </a>
       <div>Menu</div>
     </nav>
-    <header>
-      <div class="header-row">
-        <div class="logo">Brand</div>
-        <button class="hamburger">☰</button>
+    <header class="bg-dark">
+      <video
+        class="hero__video"
+        autoplay
+        muted
+        loop
+        playsinline
+        aria-hidden="true"
+      >
+        <source src="./assets/videos/schrittmacher-hero.mp4" type="video/mp4" />
+        <source
+          src="./assets/videos/schrittmacher-hero.webm"
+          type="video/webm"
+        />
+      </video>
+      <div class="hero__content">
+        <h1 class="hero__title">
+          <span class="antiqua-italic">schrittmacher</span> ist ein kreatives
+          bureau in Köln. Wir unterstützen Ihr Unternehmen mit
+          <span class="antiqua-italic">Design, Marketing-Services</span> und
+          <span class="antiqua-italic">Produktionen.</span> Wir sind Experten.
+        </h1>
       </div>
     </header>
-    <main style="height: 2000px" role="main">
+    <main style="height: 2000px" role="main" class="bg-white">
       <div class="content">
         <article>
           <h1>schrittmacher</h1>
@@ -75,5 +124,7 @@
     </footer>
 
     <script src="./assets/js/year.js"></script>
+
+    <script src="./assets/js/logo_color.js"></script>
   </body>
 </html>

@@ -1,3 +1,4 @@
+/* Fonts (mantengo tus ficheros; añade preload en HTML si quieres) */
 @font-face {
   font-family: "Noto Serif Custom";
   src: url("../fonts/Noto_Serif/NotoSerif-Variable.woff2") format("woff2");
@@ -5,7 +6,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: "Noto Serif Custom";
   src: url("../fonts/Noto_Serif/NotoSerif-italic-Variable.woff2")
@@ -14,7 +14,6 @@
   font-style: italic;
   font-display: swap;
 }
-
 @font-face {
   font-family: "Funnel Sans Custom";
   src: url("../fonts/Funnel_Sans/FunnelSans-Variable.woff2") format("woff2");
@@ -22,7 +21,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: "Funnel Sans Custom";
   src: url("../fonts/Funnel_Sans/FunnelSans-italic-Variable.woff2")
@@ -32,52 +30,137 @@
   font-display: swap;
 }
 
+/* Variables */
 :root {
-  --color-primary: #fff;
-  /* White background */
-  --color-secondary: #000;
-  /* Black accents */
-  --color-accent-1: #ff0051;
-  /* Pink accents  */
-  --color-accent-2: #260073;
-  /* Darker pink links and buttons */
-  --font-antiqua: 1rem/1.4 "Noto Serif Custom", serif;
-  --font-antiqua-italic: italic 1rem/1.4 "Noto Serif Custom", serif;
-  --font-grotesk: 1rem/1.4 "Funnel Sans Custom", sans-serif;
-  --font-grotesk-italic: italic 1rem/1.4 "Funnel Sans Custom", sans-serif;
+  --color-primary: #fff; /* White background */
+  --color-secondary: #000; /* Black accents */
+  --color-accent-1: #ff0051; /* Pink accents */
+  --color-accent-2: #260073; /* Darker pink links/buttons */
+
+  --font-antiqua: "Noto Serif Custom", serif;
+  --font-grotesk-family: "Funnel Sans Custom", sans-serif;
+  --font-grotesk-size: 1rem;
+  --font-grotesk-line: 1.4;
+
+  --padding-content: clamp(1rem, 6vw, 5rem);
+  --max-width: 1600px;
+
+  --radius: 8px;
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
+/* Base */
 html,
 body {
-  font: var(--font-grotesk);
+  font: var(--font-grotesk-size) / var(--font-grotesk-line)
+    var(--font-grotesk-family);
   line-height: 1.5;
   color: var(--color-secondary);
-  background: var(--color-s);
+  background: var(--color-primary);
   font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   width: 100%;
-  display: grid;
-  grid-template-columns: auto;
+  min-height: 100vh;
+  /* display grid removed unless needed */
 }
 
+/* Nav */
 nav {
-  background-color: red;
   position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
-  padding: 0 5vh;
+  padding: 3vw var(--padding-content);
   display: grid;
   justify-content: space-between;
   z-index: 100;
   grid-template-columns: repeat(2, auto);
 }
 
-/* Main centered container with width 90vw up to 1600px */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  color: #0b66c3;
+  font-size: 1.1rem;
+}
+
+.logo img {
+  height: clamp(32px, 4.5vw, 82px);
+  width: auto;
+  display: block;
+  transition: filter 0.3s ease;
+  filter: invert(0);
+}
+
+.logo.logo-black img {
+  filter: invert(1);
+}
+
+/* Header / Hero */
+header {
+  grid-column-start: 1;
+  grid-row-start: 1;
+  background-color: var(--color-accent-1);
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, auto);
+  place-items: center;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  z-index: 0;
+  grid-area: 1 / 1 / 4 / 4;
+}
+
+.hero__content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: calc(100vw - var(--padding-content) * 2);
+  max-width: var(--max-width);
+  grid-area: 2 / 2 / 3 / 3;
+  z-index: 1;
+}
+
+.hero__title {
+  font-size: clamp(24px, 4.1vw, 74.5px);
+  line-height: 1.1;
+  text-align: center;
+  font-weight: 400;
+  color: var(--color-primary);
+}
+
+/* Antiqua italic (kebab-case) */
+.antiqua-italic {
+  font-family: var(--font-antiqua);
+  font-style: italic;
+  font-size: 0.92em;
+  font-weight: 500;
+}
+
+/* Site container */
 .site {
   width: 90vw;
-  max-width: 1600px;
+  max-width: var(--max-width);
   margin: 0 auto;
   min-height: 100vh;
   display: grid;
@@ -85,59 +168,21 @@ nav {
   gap: 1.25rem;
 }
 
+/* Content blocks */
 main,
 footer {
   background: var(--color-primary);
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
-header {
-  position: relative;
-}
-
-.header-row {
-  position: sticky;
-  top: 0;
-  background: #fff;
-  padding: 0.5rem 1rem;
-  z-index: 50;
-}
-
-.nav {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.nav a {
-  text-decoration: none;
-  color: #0b66c3;
-  padding: 0.35rem 0.6rem;
-  border-radius: 6px;
-  background: rgba(11, 102, 195, 0.08);
-  font-size: 0.95rem;
-}
-
-.content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-article {
-  background: white;
-  padding: 1rem;
-  border-radius: 6px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-}
-
+article,
 aside {
-  background: white;
+  background: #fff;
   padding: 1rem;
   border-radius: 6px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--card-shadow);
 }
 
 footer {
@@ -146,7 +191,12 @@ footer {
   color: #555;
 }
 
-/* Breakpoints: from 768px place aside beside article */
+/* Responsive layout */
+.content {
+  display: grid;
+  gap: 1rem;
+}
+
 @media (min-width: 768px) {
   .content {
     grid-template-columns: 1fr 300px;
@@ -154,39 +204,20 @@ footer {
   }
 }
 
-/* More spacing on wide screens */
-@media (min-width: 1200px) {
-  .site {
-    gap: 1.5rem;
-  }
-
-  header,
-  main,
-  footer {
-    padding: 1.25rem;
+/* Wide screens */
+@media (min-width: calc(1600px + 2*6vw)) {
+  .logo img {
+    height: 82px;
   }
 }
 
-.logo {
-  font-weight: 700;
-  color: #0b66c3;
-  font-size: 1.1rem;
-}
-
+/* Small screens */
 .hamburger {
   display: none;
 }
 
-@media (max-width: 520px) {
-  .nav {
-    display: none;
-  }
-
-  .hamburger {
-    display: block;
-    background: #0b66c3;
-    color: #fff;
-    padding: 0.4rem 0.6rem;
-    border-radius: 6px;
+@media (max-width: 720px) {
+  .hero__title {
+    font-size: 8.1vw;
   }
 }
