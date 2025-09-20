@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function logoMidY() {
     const r = logo.getBoundingClientRect();
-    return r.top + r.height / 2;
+    return r.top + r.height;
   }
 
   // Decide y aplica estado según la sección "activa"

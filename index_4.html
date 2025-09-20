@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Base 8° — ajustar wrap y vertices desde JS</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      /* wrap se ajustará en altura por JS para contener la esquina más baja */
+      #wrap {
+        position: relative;
+        width: 100%;
+        height: 100vh; /* valor base; JS cambiará esto cuando haga falta */
+        overflow: visible; /* permitir extensión hacia abajo */
+        background: #fff;
+      }
+      /* shape ocupa todo el ancho y la altura de wrap */
+      #shape {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #ff0051;
+        color: #fff;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        will-change: clip-path;
+      }
+      .hero__video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        pointer-events: none;
+        z-index: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="shape">
+        <video
+          class="hero__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          aria-hidden="true"
+        >
+          <source
+            src="./assets/videos/schrittmacher-hero.mp4"
+            type="video/mp4"
+          />
+          <source
+            src="./assets/videos/schrittmacher-hero.webm"
+            type="video/webm"
+          />
+        </video>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const ANG = 8; // grados de inclinación de la base
+        const wrap = document.getElementById("wrap");
+        const shape = document.getElementById("shape");
+
+        function updateWrapAndShape() {
+          const W = Math.round(window.innerWidth);
+          const vpH = Math.round(window.innerHeight); // esquina derecha debe quedar en y = vpH
+          const rad = (ANG * Math.PI) / 180;
+          const dy = Math.tan(rad) * W; // px que la esquina izquierda debe bajar respecto a la derecha
+
+          const rightY = vpH;
+          const leftY = Math.round(vpH + dy);
+
+          // Ajustar la altura de wrap para contener la esquina más baja.
+          // wrap está en top:0 del documento; height debe ser leftY para que la esquina quede dentro.
+          wrap.style.height = leftY + "px";
+
+          // Ahora shape ocupa 100% de wrap, por lo que sus coordenadas internas llegan hasta leftY.
+          // Construir clip-path con vértices relativos a shape (coordenadas en px dentro de wrap/shape).
+          const tlx = 0,
+            tly = 0;
+          const trx = W,
+            tryy = 0;
+          const brx = W,
+            bry = rightY;
+          const blx = 0,
+            bly = leftY;
+
+          const path = `polygon(${tlx}px ${tly}px, ${trx}px ${tryy}px, ${brx}px ${bry}px, ${blx}px ${bly}px)`;
+          shape.style.clipPath = path;
+          shape.style.webkitClipPath = path;
+        }
+
+        // Ejecutar en carga y resize; usar requestAnimationFrame para evitar layout thrash en resize continuo.
+        let rafId = null;
+        function scheduleUpdate() {
+          if (rafId) cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(() => {
+            updateWrapAndShape();
+            rafId = null;
+          });
+        }
+
+        window.addEventListener("resize", scheduleUpdate);
+        window.addEventListener("load", scheduleUpdate);
+        scheduleUpdate();
+      })();
+    </script>
+  </body>
+</html>

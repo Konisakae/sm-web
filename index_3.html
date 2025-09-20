@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Prueba base inclinada 8°</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      #wrap {
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        background: #fff;
+      }
+      #shape {
+        position: relative;
+        background: #ff0051;
+        color: #fff;
+        width: 100%;
+        height: 100%;
+        /* evita que subpixel clipping rompa bordes en algunos navegadores */
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
+      .hero__video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        pointer-events: none;
+        z-index: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="shape">
+        <video
+          class="hero__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          aria-hidden="true"
+        >
+          <source
+            src="./assets/videos/schrittmacher-hero.mp4"
+            type="video/mp4"
+          />
+          <source
+            src="./assets/videos/schrittmacher-hero.webm"
+            type="video/webm"
+          />
+        </video>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const ANG = 8; // grados para la base
+        const wrap = document.getElementById("wrap");
+        const shape = document.getElementById("shape");
+
+        function applyPolygonBaseInclined() {
+          const W = shape.clientWidth;
+          const H = shape.clientHeight;
+          if (W === 0 || H === 0) return;
+          // Queremos que la arista inferior (de izquierda a derecha) tenga inclinación de ANG grados.
+          // Si desplazamos la esquina inferior derecha hacia arriba dy, la pendiente = dy / W.
+          // dy = tan(ANG) * W
+          const rad = (ANG * Math.PI) / 180;
+          const dy = Math.tan(rad) * W; // px que baja/ sube la esquina derecha respecto a la izquierda
+
+          // Dos opciones: arista inferior inclinada subiendo hacia la derecha (izq abajo, der arriba)
+          // y que siempre quede dentro del elemento: ajustaremos puntos del polygon.
+          // Definimos los 4 vértices en sentido horario empezando por la esquina superior izquierda.
+          // Queremos la base entre (0, H) y (W, H - dy)
+          const tlx = 0,
+            tly = 0;
+          const trx = W,
+            tryy = 0;
+          const brx = W,
+            bry = Math.max(0, Math.round(H - dy));
+          const blx = 0,
+            bly = H;
+
+          const path = `polygon(${tlx}px ${tly}px, ${trx}px ${tryy}px, ${brx}px ${bry}px, ${blx}px ${bly}px)`;
+          shape.style.clipPath = path;
+          shape.style.webkitClipPath = path;
+        }
+
+        window.addEventListener("resize", applyPolygonBaseInclined);
+        window.addEventListener("load", applyPolygonBaseInclined);
+        applyPolygonBaseInclined();
+      })();
+    </script>
+  </body>
+</html>
