@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <title>Document</title>
+  </head>
+<div class="banner" aria-hidden="true">
+  <svg class="tri" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <!-- triángulo superior con hipotenusa a 8° -->
+    <polygon points="0,100 100,0 100,100"/>
+  </svg>
+
+  <div class="center">
+    Hallo
+  </div>
+
+  <svg class="tri tri--flip pepe" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <!-- reusar la misma forma y voltear verticalmente -->
+    <polygon points="0,100 100,0 100,100"/>
+  </svg>
+   <div class="center2 pepe">
+    Hallo
+  </div>
+</div>
+
+
+<style>
+  .pepe {background-color: #260073;}
+  :root{
+    --color:#ff0051;
+    /* tan(8°) ≈ 0.140540834 → height = tan*100vw = 14.0540834vw */
+    --tri-h: 14.0540834vw;
+  }
+
+  .banner{
+    width:100%;
+    display:grid;
+    grid-template-rows:auto 1fr auto;
+    overflow:hidden;
+  }
+
+  .tri{
+    width:100%;
+    height:var(--tri-h);
+    fill:var(--color);
+    display:block; 
+    transform:translateZ(0);
+  }
+.tri:first-of-type{ transform: translateZ(0) translateY(0.25px); }
+  /* voltear el segundo triángulo para que quede simétrico */
+  .tri--flip{ transform: translateZ(0) scale(-1, -1) translateY(0.25px );}
+
+  .center{
+    background:var(--color);
+    min-height:40vh;
+    width:100%;
+    z-index: 2;
+  }
+
+  @media (max-height:360px){
+    .tri{ height: calc(var(--tri-h) * 0.5); }
+    .center{ min-height:20vh; }
+  }
+</style>
+
+
+  </body>
+</html>

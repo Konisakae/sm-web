@@ -1,0 +1,168 @@
+<!-- hero-schritt.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Schritt — Hero Video</title>
+    <style>
+      /* Ejemplo: hero a pantalla completa */
+      .hero {
+        width: 100%;
+        height: 60vh;
+        overflow: hidden;
+        position: relative;
+      }
+      .hero video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="hero">
+      <video
+        id="hero-video"
+        playsinline
+        autoplay
+        muted
+        loop
+        preload="metadata"
+      ></video>
+    </section>
+
+    <script>
+      (function () {
+        const BASE = "schrittmacher-hero";
+        const PATH = "/assets/videos/"; // ajustar si es necesario
+        const RES_MAP = [
+          { min: 1280, res: "1080" },
+          { min: 800, res: "720" },
+          { min: 0, res: "480" },
+        ];
+
+        const video = document.getElementById("hero-video");
+
+        // Hero attributes
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.controls = false;
+
+        function supportsVP9() {
+          return video.canPlayType('video/webm; codecs="vp9"') !== "";
+        }
+        function supportsHEVC() {
+          const v = video.canPlayType('video/mp4; codecs="hvc1"');
+          if (v) return v !== "";
+          return (
+            /iP(hone|ad|od)|Macintosh/.test(navigator.userAgent) &&
+            /AppleWebKit/.test(navigator.userAgent) &&
+            !/CriOS|FxiOS/.test(navigator.userAgent)
+          );
+        }
+        function supportsH264() {
+          return video.canPlayType('video/mp4; codecs="avc1.42E01E"') !== "";
+        }
+
+        function chooseRes(width) {
+          for (const e of RES_MAP) if (width >= e.min) return e.res;
+          return "480";
+        }
+
+        function chooseFormat() {
+          if (supportsVP9()) return { ext: "webm", codec: "vp9" };
+          if (supportsHEVC()) return { ext: "mp4", codec: "hevc" };
+          if (supportsH264()) return { ext: "mp4", codec: "h264" };
+          return { ext: "mp4", codec: "h264" };
+        }
+
+        function buildUrl(base, res, fmt) {
+          if (fmt.codec === "vp9") return `${PATH}${base}-${res}p-vp9.webm`;
+          if (fmt.codec === "hevc") return `${PATH}${base}-${res}p-hevc.mp4`;
+          return `${PATH}${base}-${res}p-h264.mp4`;
+        }
+
+        // Reemplaza setSourceForWidth por la versión segura que espera loadedmetadata
+        async function setSourceForWidth(width) {
+          const res = chooseRes(width);
+          const fmt = chooseFormat();
+          const urlPath = buildUrl(BASE, res, fmt);
+
+          // Evitar reload si ya está la misma fuente
+          if (video.currentSrc && video.currentSrc.endsWith(urlPath)) return;
+
+          const wasPlaying =
+            !video.paused && !video.ended && video.currentTime > 0;
+
+          // Cambia la fuente de forma segura
+          video.pause();
+          // Limpia src antes de asignar nueva para forzar reload limpio
+          try {
+            video.removeAttribute("src");
+          } catch (e) {}
+          try {
+            video.load();
+          } catch (e) {}
+
+          video.src = urlPath;
+
+          // Esperar loadedmetadata (o timeout) antes de intentar play
+          await new Promise((resolve) => {
+            let settled = false;
+            function onMeta() {
+              if (settled) return;
+              settled = true;
+              video.removeEventListener("loadedmetadata", onMeta);
+              resolve();
+            }
+            video.addEventListener("loadedmetadata", onMeta);
+            // Fallback: resolve tras 1s si no viene loadedmetadata
+            setTimeout(() => {
+              if (!settled) {
+                settled = true;
+                resolve();
+              }
+            }, 1000);
+          });
+
+          if (wasPlaying) {
+            try {
+              await video.play();
+            } catch (e) {
+              /* ignore play errors (autoplay policies) */
+            }
+          }
+        }
+
+        // Inicial
+        const initialWidth = video.clientWidth || window.innerWidth;
+        setSourceForWidth(initialWidth);
+
+        // Debounced resize
+        let timeout = null;
+        window.addEventListener("resize", () => {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => {
+            const w = video.clientWidth || window.innerWidth;
+            setSourceForWidth(w);
+          }, 150);
+        });
+
+        // Observe size changes of the video container (optional)
+        if (window.ResizeObserver) {
+          const ro = new ResizeObserver((entries) => {
+            for (const e of entries) {
+              const w = e.contentRect.width;
+              setSourceForWidth(w);
+            }
+          });
+          ro.observe(video);
+        }
+      })();
+    </script>
+  </body>
+</html>

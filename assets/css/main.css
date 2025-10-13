@@ -15,15 +15,16 @@
   font-display: swap;
 }
 @font-face {
-  font-family: "Funnel Sans Custom";
-  src: url("../fonts/Funnel_Sans/FunnelSans-Variable.woff2") format("woff2");
+  font-family: "Hanken Grotesk Custom";
+  src: url("../fonts/Hanken_Grotesk/HankenGrotesk-Variable.woff2")
+    format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "Funnel Sans Custom";
-  src: url("../fonts/Funnel_Sans/FunnelSans-italic-Variable.woff2")
+  font-family: "Hanken Grotesk Custom";
+  src: url("../fonts/Hanken_Grotesk/HankenGrotesk-italic-Variable.woff2")
     format("woff2");
   font-weight: 100 900;
   font-style: italic;
@@ -38,7 +39,7 @@
   --color-accent-2: #260073; /* Darker pink links/buttons */
 
   --font-antiqua: "Noto Serif Custom", serif;
-  --font-grotesk-family: "Funnel Sans Custom", sans-serif;
+  --font-grotesk-family: "Hanken Grotesk Custom", sans-serif;
   --font-grotesk-size: 1rem;
   --font-grotesk-line: 1.4;
 
@@ -90,7 +91,7 @@ nav {
   align-items: center;
   gap: 12px;
   font-weight: 700;
-  color: #0b66c3;
+  color: var(--color-secondary);
   font-size: 1.1rem;
 }
 
@@ -124,7 +125,7 @@ nav {
 }
 
 .hero__video {
-  background-color: red;
+  background-color: var(--color-accent-1);
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -156,9 +157,10 @@ nav {
 }
 
 .hero__button {
-  grid-area: 3 / 2 / 4 / 3;
+  grid-area: 3 / 1 / 4 / 4;
   z-index: 1;
 }
+
 /* Antiqua italic (kebab-case) */
 .antiqua-italic {
   font-family: var(--font-antiqua);
