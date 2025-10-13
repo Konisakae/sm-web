@@ -1,42 +1,26 @@
-<!-- hero-schritt.html -->
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Schritt — Hero Video</title>
-    <style>
-      /* Ejemplo: hero a pantalla completa */
-      .hero {
-        width: 100%;
-        height: 60vh;
-        overflow: hidden;
-        position: relative;
-      }
-      .hero video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
   </head>
   <body>
-    <section class="hero">
-      <video
-        id="hero-video"
-        playsinline
-        autoplay
-        muted
-        loop
-        preload="metadata"
-      ></video>
-    </section>
+    <!-- hero-schritt-deferred-switch.html -->
+    <video
+      id="hero-video"
+      playsinline
+      autoplay
+      muted
+      loop
+      preload="metadata"
+      style="width: 100%; height: 60vh; object-fit: cover; display: block"
+    ></video>
 
     <script>
-      (function () {
+      (() => {
         const BASE = "schrittmacher-hero";
-        const PATH = "./assets/videos/"; // ajustar si es necesario
+        const PATH = "./assets/videos/";
         const RES_MAP = [
           { min: 1280, res: "1080" },
           { min: 800, res: "720" },
@@ -44,8 +28,6 @@
         ];
 
         const video = document.getElementById("hero-video");
-
-        // Hero attributes
         video.autoplay = true;
         video.muted = true;
         video.loop = true;
@@ -86,82 +68,108 @@
           return `${PATH}${base}-${res}p-h264.mp4`;
         }
 
-        // Reemplaza setSourceForWidth por la versión segura que espera loadedmetadata
-        async function setSourceForWidth(width) {
+        // Decide ideal source based on current width & codec support
+        function idealSourceForWidth(width) {
           const res = chooseRes(width);
           const fmt = chooseFormat();
-          const urlPath = buildUrl(BASE, res, fmt);
+          return buildUrl(BASE, res, fmt);
+        }
 
-          // Evitar reload si ya está la misma fuente
-          if (video.currentSrc && video.currentSrc.endsWith(urlPath)) return;
-
-          const wasPlaying =
-            !video.paused && !video.ended && video.currentTime > 0;
-
-          // Cambia la fuente de forma segura
+        // Set source immediately (used at init)
+        async function setSource(url) {
+          if (video.currentSrc && video.currentSrc.endsWith(url)) return;
           video.pause();
-          // Limpia src antes de asignar nueva para forzar reload limpio
           try {
             video.removeAttribute("src");
-          } catch (e) {}
-          try {
             video.load();
           } catch (e) {}
-
-          video.src = urlPath;
-
-          // Esperar loadedmetadata (o timeout) antes de intentar play
+          video.src = url;
+          // Wait for metadata (best-effort) before attempting play
           await new Promise((resolve) => {
-            let settled = false;
+            let done = false;
             function onMeta() {
-              if (settled) return;
-              settled = true;
+              if (done) return;
+              done = true;
               video.removeEventListener("loadedmetadata", onMeta);
               resolve();
             }
             video.addEventListener("loadedmetadata", onMeta);
-            // Fallback: resolve tras 1s si no viene loadedmetadata
             setTimeout(() => {
-              if (!settled) {
-                settled = true;
+              if (!done) {
+                done = true;
                 resolve();
               }
             }, 1000);
           });
-
-          if (wasPlaying) {
-            try {
-              await video.play();
-            } catch (e) {
-              /* ignore play errors (autoplay policies) */
-            }
-          }
+          try {
+            await video.play();
+          } catch (e) {}
         }
 
-        // Inicial
+        // Initialize with ideal source for current width
         const initialWidth = video.clientWidth || window.innerWidth;
-        setSourceForWidth(initialWidth);
+        const initialUrl = idealSourceForWidth(initialWidth);
+        setSource(initialUrl);
 
-        // Debounced resize
-        let timeout = null;
+        // Track ideal url on resize but DO NOT switch immediately.
+        // Will switch at next loop iteration if ideal changed.
+        let pendingIdealUrl = initialUrl;
+        let resizeTimeout = null;
         window.addEventListener("resize", () => {
-          clearTimeout(timeout);
-          timeout = setTimeout(() => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
             const w = video.clientWidth || window.innerWidth;
-            setSourceForWidth(w);
-          }, 150);
+            pendingIdealUrl = idealSourceForWidth(w);
+          }, 200);
         });
 
-        // Observe size changes of the video container (optional)
+        // Also update pendingIdealUrl when container size changes
         if (window.ResizeObserver) {
           const ro = new ResizeObserver((entries) => {
             for (const e of entries) {
               const w = e.contentRect.width;
-              setSourceForWidth(w);
+              pendingIdealUrl = idealSourceForWidth(w);
             }
           });
           ro.observe(video);
         }
+
+        // On each ended/loop iteration decide whether to switch to pendingIdealUrl.
+        // Use 'timeupdate' to detect near-loop end (since loop attribute restarts automatically).
+        // Strategy: when currentTime is within last 0.5s of duration, store flag; on 'seeked' after loop, swap.
+        let shouldSwapOnNextLoop = false;
+        function checkNearEnd() {
+          if (!video.duration || !isFinite(video.duration)) return;
+          const remaining = video.duration - video.currentTime;
+          if (remaining <= 0.5) shouldSwapOnNextLoop = true;
+        }
+
+        video.addEventListener("timeupdate", checkNearEnd);
+
+        // When playback wraps to near 0 (loop happened), perform swap if pendingIdealUrl differs
+        let lastTime = 0;
+        video.addEventListener("timeupdate", async () => {
+          // Detect wrap: currentTime decreased significantly (loop)
+          if (
+            video.currentTime < lastTime - 0.5 ||
+            (shouldSwapOnNextLoop && video.currentTime < 0.5)
+          ) {
+            shouldSwapOnNextLoop = false;
+            const current = video.currentSrc || "";
+            if (pendingIdealUrl && !current.endsWith(pendingIdealUrl)) {
+              // Replace source now; allow the current loop to finish quickly then start new source
+              await setSource(pendingIdealUrl);
+            }
+          }
+          lastTime = video.currentTime;
+        });
+
+        // Safety: also listen to 'ended' (in case loop attr not used)
+        video.addEventListener("ended", async () => {
+          const current = video.currentSrc || "";
+          if (pendingIdealUrl && !current.endsWith(pendingIdealUrl))
+            await setSource(pendingIdealUrl);
+        });
       })();
     </script>
   </body>
