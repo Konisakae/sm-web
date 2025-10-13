@@ -6,39 +6,46 @@
     <title>Document</title>
   </head>
   <body>
-    <!-- hero-schritt-deferred-switch.html -->
     <video
       id="hero-video"
-      playsinline
       autoplay
       muted
       loop
+      playsinline
       preload="metadata"
-      style="width: 100%; height: 60vh; object-fit: cover; display: block"
-    ></video>
+      style="width: 100%; height: 75vh; object-fit: cover; display: block"
+    >
+      Tu navegador no soporta el elemento video.
+    </video>
 
     <script>
-      (() => {
-        const BASE = "schrittmacher-hero";
+      (function () {
         const PATH = "./assets/videos/";
-        const RES_MAP = [
-          { min: 1280, res: "1080" },
-          { min: 800, res: "720" },
-          { min: 0, res: "480" },
+        const BASE = "schrittmacher-hero";
+
+        // Ordered media queries: prefer 1080p on wide or high-density screens,
+        // then 720p on medium or medium-density, then 480p fallback.
+        const RES_SOURCES = [
+          // 1080p: wide screens OR high-density (retina) small screens
+          { media: "(min-width:1280px), (min-resolution:2dppx)", res: "1080" },
+          // 720p: >=800px or moderately dense screens
+          {
+            media:
+              "(min-width:800px), (min-width:600px) and (min-resolution:1.5dppx)",
+            res: "720",
+          },
+          // 480p fallback
+          { media: "(min-width:0px)", res: "480" },
         ];
 
-        const video = document.getElementById("hero-video");
-        video.autoplay = true;
-        video.muted = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.controls = false;
+        const VIDEO = document.getElementById("hero-video");
 
+        // Codec detection (best-effort via canPlayType + UA heuristic for HEVC on Apple)
         function supportsVP9() {
-          return video.canPlayType('video/webm; codecs="vp9"') !== "";
+          return VIDEO.canPlayType('video/webm; codecs="vp9"') !== "";
         }
         function supportsHEVC() {
-          const v = video.canPlayType('video/mp4; codecs="hvc1"');
+          const v = VIDEO.canPlayType('video/mp4; codecs="hvc1"');
           if (v) return v !== "";
           return (
             /iP(hone|ad|od)|Macintosh/.test(navigator.userAgent) &&
@@ -47,129 +54,97 @@
           );
         }
         function supportsH264() {
-          return video.canPlayType('video/mp4; codecs="avc1.42E01E"') !== "";
+          return VIDEO.canPlayType('video/mp4; codecs="avc1.42E01E"') !== "";
         }
 
-        function chooseRes(width) {
-          for (const e of RES_MAP) if (width >= e.min) return e.res;
-          return "480";
+        function urlFor(res, codec) {
+          if (codec === "vp9") return `${PATH}${BASE}-${res}p-vp9.webm`;
+          if (codec === "hevc") return `${PATH}${BASE}-${res}p-hevc.mp4`;
+          return `${PATH}${BASE}-${res}p-h264.mp4`;
         }
 
-        function chooseFormat() {
-          if (supportsVP9()) return { ext: "webm", codec: "vp9" };
-          if (supportsHEVC()) return { ext: "mp4", codec: "hevc" };
-          if (supportsH264()) return { ext: "mp4", codec: "h264" };
-          return { ext: "mp4", codec: "h264" };
-        }
+        // Decide codec priority
+        const prefs = [];
+        if (supportsVP9()) prefs.push("vp9");
+        if (supportsHEVC()) prefs.push("hevc");
+        if (supportsH264()) prefs.push("h264");
+        if (prefs.length === 0) prefs.push("h264");
 
-        function buildUrl(base, res, fmt) {
-          if (fmt.codec === "vp9") return `${PATH}${base}-${res}p-vp9.webm`;
-          if (fmt.codec === "hevc") return `${PATH}${base}-${res}p-hevc.mp4`;
-          return `${PATH}${base}-${res}p-h264.mp4`;
-        }
-
-        // Decide ideal source based on current width & codec support
-        function idealSourceForWidth(width) {
-          const res = chooseRes(width);
-          const fmt = chooseFormat();
-          return buildUrl(BASE, res, fmt);
-        }
-
-        // Set source immediately (used at init)
-        async function setSource(url) {
-          if (video.currentSrc && video.currentSrc.endsWith(url)) return;
-          video.pause();
-          try {
-            video.removeAttribute("src");
-            video.load();
-          } catch (e) {}
-          video.src = url;
-          // Wait for metadata (best-effort) before attempting play
-          await new Promise((resolve) => {
-            let done = false;
-            function onMeta() {
-              if (done) return;
-              done = true;
-              video.removeEventListener("loadedmetadata", onMeta);
-              resolve();
-            }
-            video.addEventListener("loadedmetadata", onMeta);
-            setTimeout(() => {
-              if (!done) {
-                done = true;
-                resolve();
-              }
-            }, 1000);
-          });
-          try {
-            await video.play();
-          } catch (e) {}
-        }
-
-        // Initialize with ideal source for current width
-        const initialWidth = video.clientWidth || window.innerWidth;
-        const initialUrl = idealSourceForWidth(initialWidth);
-        setSource(initialUrl);
-
-        // Track ideal url on resize but DO NOT switch immediately.
-        // Will switch at next loop iteration if ideal changed.
-        let pendingIdealUrl = initialUrl;
-        let resizeTimeout = null;
-        window.addEventListener("resize", () => {
-          clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(() => {
-            const w = video.clientWidth || window.innerWidth;
-            pendingIdealUrl = idealSourceForWidth(w);
-          }, 200);
-        });
-
-        // Also update pendingIdealUrl when container size changes
-        if (window.ResizeObserver) {
-          const ro = new ResizeObserver((entries) => {
-            for (const e of entries) {
-              const w = e.contentRect.width;
-              pendingIdealUrl = idealSourceForWidth(w);
-            }
-          });
-          ro.observe(video);
-        }
-
-        // On each ended/loop iteration decide whether to switch to pendingIdealUrl.
-        // Use 'timeupdate' to detect near-loop end (since loop attribute restarts automatically).
-        // Strategy: when currentTime is within last 0.5s of duration, store flag; on 'seeked' after loop, swap.
-        let shouldSwapOnNextLoop = false;
-        function checkNearEnd() {
-          if (!video.duration || !isFinite(video.duration)) return;
-          const remaining = video.duration - video.currentTime;
-          if (remaining <= 0.5) shouldSwapOnNextLoop = true;
-        }
-
-        video.addEventListener("timeupdate", checkNearEnd);
-
-        // When playback wraps to near 0 (loop happened), perform swap if pendingIdealUrl differs
-        let lastTime = 0;
-        video.addEventListener("timeupdate", async () => {
-          // Detect wrap: currentTime decreased significantly (loop)
-          if (
-            video.currentTime < lastTime - 0.5 ||
-            (shouldSwapOnNextLoop && video.currentTime < 0.5)
-          ) {
-            shouldSwapOnNextLoop = false;
-            const current = video.currentSrc || "";
-            if (pendingIdealUrl && !current.endsWith(pendingIdealUrl)) {
-              // Replace source now; allow the current loop to finish quickly then start new source
-              await setSource(pendingIdealUrl);
-            }
+        // Inject sources: for each codec (in preferred order) add the media-specific sources
+        for (const codec of prefs) {
+          for (const item of RES_SOURCES) {
+            const src = urlFor(item.res, codec);
+            const type =
+              codec === "vp9"
+                ? "video/webm; codecs=vp9"
+                : codec === "hevc"
+                ? "video/mp4; codecs=hvc1"
+                : "video/mp4; codecs=avc1.42E01E";
+            const source = document.createElement("source");
+            source.src = src;
+            source.type = type;
+            source.media = item.media;
+            VIDEO.appendChild(source);
           }
-          lastTime = video.currentTime;
+        }
+
+        // Logging helper: print current source when ready/playing/loop
+        function logCurrent() {
+          const src = VIDEO.currentSrc || VIDEO.src || "[no-src]";
+          console.log("Hero video source:", src);
+        }
+
+        VIDEO.addEventListener("loadedmetadata", logCurrent);
+        VIDEO.addEventListener("playing", logCurrent);
+
+        // Detect loop wrap via timeupdate (log when loop occurs)
+        let lastTime = 0;
+        VIDEO.addEventListener("timeupdate", () => {
+          if (VIDEO.currentTime < lastTime - 0.5) {
+            // loop detected
+            logCurrent();
+          }
+          lastTime = VIDEO.currentTime;
         });
 
-        // Safety: also listen to 'ended' (in case loop attr not used)
-        video.addEventListener("ended", async () => {
-          const current = video.currentSrc || "";
-          if (pendingIdealUrl && !current.endsWith(pendingIdealUrl))
-            await setSource(pendingIdealUrl);
+        // Expose debug helper
+        window.__heroCurrentSource = () =>
+          VIDEO.currentSrc || VIDEO.src || null;
+      })();
+    </script>
+
+    <script>
+      (function () {
+        const VIDEO = document.getElementById("hero-video");
+
+        function logCurrent() {
+          const src = VIDEO.currentSrc || VIDEO.src || "[no-src]";
+          console.log("Hero video playing:", src);
+        }
+
+        // Log cuando metadata cargue (source seleccionado)
+        VIDEO.addEventListener("loadedmetadata", () => {
+          logCurrent();
         });
+
+        // Log cuando playback comienza o se reanuda
+        VIDEO.addEventListener("playing", () => {
+          logCurrent();
+        });
+
+        // Log cada vez que el video hace loop (wrap). 'timeupdate' detects wrap
+        let lastTime = 0;
+        VIDEO.addEventListener("timeupdate", () => {
+          if (VIDEO.currentTime < lastTime - 0.5) {
+            // loop detected
+            logCurrent();
+          }
+          lastTime = VIDEO.currentTime;
+        });
+
+        // Optional: expose a global helper for debugging
+        window.__heroCurrentSource = () =>
+          VIDEO.currentSrc || VIDEO.src || null;
       })();
     </script>
   </body>
