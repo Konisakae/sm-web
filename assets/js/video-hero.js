@@ -1,0 +1,91 @@
+(function () {
+  const PATH = "../assets/videos/";
+  const BASE = "schrittmacher-hero";
+
+  // Ordered media queries: prefer 1080p on wide or high-density screens,
+  // then 720p on medium or medium-density, then 480p fallback.
+  const RES_SOURCES = [
+    // 1080p: wide screens OR high-density (retina) small screens
+    { media: "(min-width:1280px), (min-resolution:2dppx)", res: "1080" },
+    // 720p: >=800px or moderately dense screens
+    {
+      media:
+        "(min-width:800px), (min-width:600px) and (min-resolution:1.5dppx)",
+      res: "720",
+    },
+    // 480p fallback
+    { media: "(min-width:0px)", res: "480" },
+  ];
+
+  const VIDEO = document.getElementById("hero-video");
+
+  // Codec detection (best-effort via canPlayType + UA heuristic for HEVC on Apple)
+  function supportsVP9() {
+    return VIDEO.canPlayType('video/webm; codecs="vp9"') !== "";
+  }
+  function supportsHEVC() {
+    const v = VIDEO.canPlayType('video/mp4; codecs="hvc1"');
+    if (v) return v !== "";
+    return (
+      /iP(hone|ad|od)|Macintosh/.test(navigator.userAgent) &&
+      /AppleWebKit/.test(navigator.userAgent) &&
+      !/CriOS|FxiOS/.test(navigator.userAgent)
+    );
+  }
+  function supportsH264() {
+    return VIDEO.canPlayType('video/mp4; codecs="avc1.42E01E"') !== "";
+  }
+
+  function urlFor(res, codec) {
+    if (codec === "vp9") return `${PATH}${BASE}-${res}p-vp9.webm`;
+    if (codec === "hevc") return `${PATH}${BASE}-${res}p-hevc.mp4`;
+    return `${PATH}${BASE}-${res}p-h264.mp4`;
+  }
+
+  // Decide codec priority
+  const prefs = [];
+  if (supportsVP9()) prefs.push("vp9");
+  if (supportsHEVC()) prefs.push("hevc");
+  if (supportsH264()) prefs.push("h264");
+  if (prefs.length === 0) prefs.push("h264");
+
+  // Inject sources: for each codec (in preferred order) add the media-specific sources
+  for (const codec of prefs) {
+    for (const item of RES_SOURCES) {
+      const src = urlFor(item.res, codec);
+      const type =
+        codec === "vp9"
+          ? "video/webm; codecs=vp9"
+          : codec === "hevc"
+          ? "video/mp4; codecs=hvc1"
+          : "video/mp4; codecs=avc1.42E01E";
+      const source = document.createElement("source");
+      source.src = src;
+      source.type = type;
+      source.media = item.media;
+      VIDEO.appendChild(source);
+    }
+  }
+
+  // Logging helper: print current source when ready/playing/loop
+  function logCurrent() {
+    const src = VIDEO.currentSrc || VIDEO.src || "[no-src]";
+    console.log("Hero video source:", src);
+  }
+
+  VIDEO.addEventListener("loadedmetadata", logCurrent);
+  VIDEO.addEventListener("playing", logCurrent);
+
+  // Detect loop wrap via timeupdate (log when loop occurs)
+  let lastTime = 0;
+  VIDEO.addEventListener("timeupdate", () => {
+    if (VIDEO.currentTime < lastTime - 0.5) {
+      // loop detected
+      logCurrent();
+    }
+    lastTime = VIDEO.currentTime;
+  });
+
+  // Expose debug helper
+  window.__heroCurrentSource = () => VIDEO.currentSrc || VIDEO.src || null;
+})();

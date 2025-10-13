@@ -39,35 +39,47 @@
   <body>
     <nav>
       <a id="logo" class="logo" href="#" aria-label="Start">
-        <img src="./assets/images/schrittmacher-logo_2.svg" alt="Firmenlogo" />
+        <!-- <img src="./assets/images/schrittmacher-logo_2.svg" alt="Firmenlogo" /> -->
+        <object
+          id="miSvg"
+          type="image/svg+xml"
+          data="./assets/images/logo.svg"
+        ></object>
+        <!-- <script>
+          const color2 = getComputedStyle(document.documentElement)
+            .getPropertyValue("--color-accent-2")
+            .trim();
+
+          const obj = document.getElementById("miSvg");
+          obj.addEventListener("load", () => {
+            const svgDoc = obj.contentDocument; // documento del SVG
+            const elemento = svgDoc.getElementById("Ebene_1"); // por id dentro del SVG
+            elemento.style.fill = color2; // cambiar estilo
+          });
+        </script> -->
       </a>
       <div>Menu</div>
     </nav>
     <header id="header" class="header bg-dark">
       <video
-        id="hero__video"
-        class="hero__video"
+        id="hero-video"
+        class="hero-video"
         autoplay
         muted
         loop
         playsinline
+        preload="metadata"
         aria-hidden="true"
-      >
-        <source src="./assets/videos/schrittmacher-hero.mp4" type="video/mp4" />
-        <!-- <source
-          src="./assets/videos/schrittmacher-hero.webm"
-          type="video/webm"
-        /> -->
-      </video>
-      <div class="hero__content">
-        <h1 class="hero__title">
+      ></video>
+      <div class="hero-content">
+        <h1 class="hero-title">
           <span class="antiqua-italic">schrittmacher</span> ist ein kreatives
           bureau in Köln. Wir unterstützen Ihr Unternehmen mit
           <span class="antiqua-italic">Design, Marketing-Services</span> und
           <span class="antiqua-italic">Produktionen.</span> Wir sind Experten.
         </h1>
       </div>
-      <button class="hero__button">BUTTON</button>
+      <button class="hero-button">BUTTON</button>
     </header>
     <main style="height: 2000px" role="main" class="bg-white">
       <div class="content">
@@ -117,7 +129,7 @@
         </aside>
       </div>
       <div aria-labelledby="aside-title" id="header" class="header">
-        <div class="hero__video" id="hero__video">
+        <div class="hero-video" id="hero-video">
           <h2 id="aside-title">Barra lateral</h2>
           <p>
             En pantallas anchas aparece a la derecha; en móviles se sitúa debajo
@@ -137,6 +149,7 @@
     <script src="./assets/js/year.js"></script>
 
     <script src="./assets/js/logo_color.js"></script>
+    <script src="./assets/js/video-hero.js"></script>
     <!--     <script src="./assets/js/inclination_2.js"></script>
  -->
   </body>
