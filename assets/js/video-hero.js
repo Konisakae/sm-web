@@ -1,5 +1,5 @@
 (function () {
-  const PATH = "../assets/videos/";
+  const PATH = "./assets/videos/";
   const BASE = "schrittmacher-hero";
 
   // Ordered media queries: prefer 1080p on wide or high-density screens,
