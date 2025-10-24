@@ -1,0 +1,40 @@
+h2 {
+  font-size: calc(clamp(24px, 4.1vw, 74.5px) / 1.2);
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+p {
+  font-size: calc(clamp(24px, 4.1vw, 74.5px) / 2);
+  line-height: 1.2;
+}
+h3 {
+  font-size: calc(clamp(24px, 4.1vw, 74.5px) / 2);
+  line-height: 1.2;
+  font-weight: 900 !important;
+}
+
+.font-dark {
+  color: var(--color-accent-2);
+}
+
+.font-hell {
+  color: var(--color-accent-1);
+}
+
+.font-primary {
+  color: var(--color-primary);
+}
+
+h2.cont05-01 {
+  font-weight: 200;
+}
+.slide_title {
+  font-size: calc(clamp(24px, 4.1vw, 74.5px) / 3);
+  line-height: 1.2;
+  font-weight: 600;
+}
+.slide_text {
+  font-size: calc(clamp(24px, 4.1vw, 74.5px) / 4);
+  line-height: 1.2;
+}

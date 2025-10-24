@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* hace que el SVG ocupe solo el espacio del contenedor (sin inline gaps) */
+      svg.tilted {
+        display: block; /* evita gaps por display inline */
+        width: 100%; /* ocupa el ancho del grid/celda */
+        height: auto;
+      }
+
+      /* asegura que la <image> se posicione sin generar offset visual */
+      svg.tilted .svg-image {
+        x: 0; /* explícito, por si el navegador interpreta distinto */
+        image-rendering: auto;
+        transform-origin: 0 0;
+        display: block;
+      }
+
+      /* si tu clipPath tiene un margen interno (M 8 0), compensa moviendo la imagen */
+      svg.tilted .svg-image[width][height] {
+        /* mueve la imagen 8px a la izquierda para cubrir el "padding" del path */
+        transform: translateX(-8px);
+      }
+
+      /* alternativa: usar preserveAspectRatio="xMinYMid slice" para alinear la imagen a la izquierda */
+      svg.tilted image {
+        /* si prefieres no usar transform: */
+        preserveaspectratio: xMinYMid slice;
+      }
+    </style>
+  </head>
+  <body>
+    <svg
+      viewBox="0 0 320 350"
+      xmlns="http://www.w3.org/2000/svg"
+      class="tilted"
+      role="img"
+      aria-label="..."
+    >
+      <defs>
+        <clipPath id="rounded-tilt-clip">
+          <path
+            d="M 8 0 H 312 A 8 8 0 0 1 320 8 V 306.97 A 8 8 0 0 1 312.03 314.97 L 44.97 350 A 8 8 0 0 1 36.97 342 V 8 A 8 8 0 0 1 44 0 Z"
+          />
+        </clipPath>
+      </defs>
+      <g clip-path="url(#rounded-tilt-clip)">
+        <image
+          href="./assets/images/1.jpg"
+          class="svg-image"
+          width="320"
+          height="350"
+          preserveAspectRatio="xMidYMid slice"
+        />
+      </g>
+    </svg>
+  </body>
+</html>

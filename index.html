@@ -20,50 +20,59 @@
     />
     <link
       rel="preload"
-      href="./assets/fonts/Hanken_Grotesk/HankenGrotesk-Variable.woff2"
+      href="./assets/fonts/Hanken_Grotesk/HankenGrotesk-Variable.ttf"
       as="font"
-      type="font/woff2"
+      type="font/ttf"
       crossorigin
     />
     <link
       rel="preload"
-      href="./assets/fonts/Hanken_Grotesk/HankenGrotesk-italic-Variable.woff2"
+      href="./assets/fonts/Hanken_Grotesk/HankenGrotesk-italic-Variable.ttf"
       as="font"
-      type="font/woff2"
+      type="font/ttf"
       crossorigin
     />
     <link rel="stylesheet" href="./assets/css/reset.css" />
     <link rel="stylesheet" href="./assets/css/main.css?v=1.1.3" />
+    <link rel="stylesheet" href="./assets/css/triangulos.css" />
+    <link rel="stylesheet" href="./assets/css/fonts.css" />
+    <link rel="stylesheet" href="./assets/css/menu.css" />
+    <link rel="stylesheet" href="./assets/css/items.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   </head>
 
   <body>
     <nav>
-      <a id="logo" class="logo" href="#" aria-label="Start">
-        <!-- <img src="./assets/images/schrittmacher-logo_2.svg" alt="Firmenlogo" /> -->
+      <a
+        id="logo"
+        class="logo"
+        href=""
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Start"
+      >
         <object
           id="miSvg"
           type="image/svg+xml"
           data="./assets/images/logo.svg"
         ></object>
-        <!-- <script>
-          const color2 = getComputedStyle(document.documentElement)
-            .getPropertyValue("--color-accent-2")
-            .trim();
-
-          const obj = document.getElementById("miSvg");
-          obj.addEventListener("load", () => {
-            const svgDoc = obj.contentDocument; // documento del SVG
-            const elemento = svgDoc.getElementById("Ebene_1"); // por id dentro del SVG
-            elemento.style.fill = color2; // cambiar estilo
-          });
-        </script> -->
       </a>
-      <div>Menu</div>
+
+      <button
+        aria-label="Menu"
+        id="hamburgerBtn1"
+        class="menuToggle"
+        aria-expanded="false"
+        aria-haspopup="true"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
     </nav>
     <header id="header" class="header bg-dark">
       <video
         id="hero-video"
-        class="hero-video"
+        class="hero-video media-wrapper video-no"
         autoplay
         muted
         loop
@@ -79,71 +88,634 @@
           <span class="antiqua-italic">Produktionen.</span> Wir sind Experten.
         </h1>
       </div>
-      <button class="hero-button">BUTTON</button>
-    </header>
-    <main style="height: 2000px" role="main" class="bg-white">
-      <div class="content">
-        <article>
-          <h1>schrittmacher</h1>
-          <p>
-            Contenido de ejemplo. En pantallas pequeñas este artículo ocupa toda
-            la anchura disponible dentro del ancho del sitio (90vw hasta
-            1600px).
-          </p>
-          <p>Puedes añadir más secciones y subsecciones aquí.</p>
-        </article>
-        <article>
-          <h1>schrittmacher</h1>
-          <p>
-            Contenido de ejemplo. En pantallas pequeñas este artículo ocupa toda
-            la anchura disponible dentro del ancho del sitio (90vw hasta
-            1600px).
-          </p>
-          <p>Puedes añadir más secciones y subsecciones aquí.</p>
-        </article>
-        <article>
-          <h1>schrittmacher</h1>
-          <p>
-            Contenido de ejemplo. En pantallas pequeñas este artículo ocupa toda
-            la anchura disponible dentro del ancho del sitio (90vw hasta
-            1600px).
-          </p>
-          <p>Puedes añadir más secciones y subsecciones aquí.</p>
-        </article>
-        <article>
-          <h1>schrittmacher</h1>
-          <p>
-            Contenido de ejemplo. En pantallas pequeñas este artículo ocupa toda
-            la anchura disponible dentro del ancho del sitio (90vw hasta
-            1600px).
-          </p>
-          <p>Puedes añadir más secciones y subsecciones aquí.</p>
-        </article>
-
-        <aside aria-labelledby="aside-title">
-          <h2 id="aside-title">Barra lateral</h2>
-          <p>
-            En pantallas anchas aparece a la derecha; en móviles se sitúa debajo
-            del artículo.
-          </p>
-        </aside>
-      </div>
-      <div aria-labelledby="aside-title" id="header" class="header">
-        <div class="hero-video" id="hero-video">
-          <h2 id="aside-title">Barra lateral</h2>
-          <p>
-            En pantallas anchas aparece a la derecha; en móviles se sitúa debajo
-            del artículo.
-          </p>
+      <div class="hero-bottom">
+        <button class="hero-button">Mehr erfahren</button>
+        <div class="hero-separator" style="height: 14vw">
+          <hr class="sep" />
         </div>
       </div>
+    </header>
+    <main role="main">
+      <div class="container">
+        <section class="cont01 font-dark">
+          <h2 class="cont01-01">
+            Ribusant, die boutique Agentur in Köln. Es non et represt, ea cor
+            rerchitam, ut eum quiam eri untis ea ist, conse doluptatiis eniendam
+            ab im fugias aspis mod ut earum quibus.
+          </h2>
+          <div class="cont01-02" data-aos="fade-right" data-aos-duration="1000">
+            <p class="cont01-02-p">
+              Erum vendis escime restionsequi aut audionetum dolor minci il
+              inimo dis eum aceptae. Neque consequo ipis am dolum sinum exerror
+              atempossit excersp ictio. Nulluptatium quunt etur aut volore
+              nonsequiam, con consequamus earcipsae nonsed molum expeditem
+              ressus.
+            </p>
+            <h3 class="cont01-02-h3">
+              Untiaecto quuntotatur, et hilles aut quatur sitaqui con rerecep
+              ernatec ulparumquam.
+            </h3>
+            <button class="cont01-02-button">Schreiben Sie uns!</button>
+          </div>
+          <div
+            class="responsive-tilt"
+            data-aos="fade-left"
+            data-aos-duration="1000"
+          >
+            <svg
+              viewBox="0 0 320 350"
+              preserveAspectRatio="xMidYMid slice"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label="Imagen con borde inferior inclinado y esquinas redondeadas"
+              class="svg-lazy"
+            >
+              <defs>
+                <clipPath id="rounded-tilt-clip">
+                  <path
+                    d="
+          M 8 0
+          H 312
+          A 8 8 0 0 1 320 8
+          V 306.97
+          A 8 8 0 0 1 312.03 314.97
+          L 44.97 350
+          A 8 8 0 0 1 36.97 342
+          V 8
+          A 8 8 0 0 1 44 0
+          Z"
+                  />
+                </clipPath>
+              </defs>
+
+              <g clip-path="url(#rounded-tilt-clip)">
+                <!-- usar data-href para no cargar inmediatamente -->
+                <image
+                  data-href="./assets/images/1.jpg"
+                  href=""
+                  x="0"
+                  y="0"
+                  width="320"
+                  height="350"
+                  preserveAspectRatio="xMidYMid slice"
+                  class="svg-image"
+                />
+              </g>
+            </svg>
+          </div>
+        </section>
+        <div style="height: 14vw; margin: 5vw 0"><hr class="sep3" /></div>
+        <section
+          class="cont02 font-hell"
+          data-aos="fade-up"
+          data-aos-duration="1000"
+        >
+          <h2 class="cont02-01">
+            Neque
+            <span class="antiqua-italic" style="font-weight: 600"
+              >consequo</span
+            >
+            ipis am dolum sinum exerror atempossit excersp ictio. Dolest
+            vollandante eum.
+          </h2>
+          <div class="cont02-02 font-dark">
+            <div>
+              <div class="item">
+                <div class="title">Werbemittel</div>
+                <button
+                  class="item-btn toggle-btn"
+                  aria-expanded="false"
+                  aria-controls="content-1"
+                  aria-label="Mostrar contenido"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <line
+                      class="icon-line line-horizontal"
+                      x1="3"
+                      y1="9"
+                      x2="15"
+                      y2="9"
+                    ></line>
+                    <line
+                      class="icon-line line-vertical"
+                      x1="9"
+                      y1="3"
+                      x2="9"
+                      y2="15"
+                    ></line>
+                  </svg>
+                </button>
+                <div class="item-content">
+                  <div class="content-wrap" id="content-1">
+                    <div class="contento">
+                      <img src="./assets/images/item.png" alt="" />
+                      <p>
+                        Erum vendis escime restionsequi aut audionetum dolor
+                        minci il inimo dis eum aceptae. Neque consequo ipis am
+                        dolum sinum exerror atempossit excersp ictio.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="title">Corporate Design</div>
+                <button
+                  class="item-btn toggle-btn"
+                  aria-expanded="false"
+                  aria-controls="content-1"
+                  aria-label="Mostrar contenido"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <line
+                      class="icon-line line-horizontal"
+                      x1="3"
+                      y1="9"
+                      x2="15"
+                      y2="9"
+                    ></line>
+                    <line
+                      class="icon-line line-vertical"
+                      x1="9"
+                      y1="3"
+                      x2="9"
+                      y2="15"
+                    ></line>
+                  </svg>
+                </button>
+                <div class="item-content">
+                  <div class="content-wrap" id="content-1">
+                    <div class="contento">
+                      <img src="./assets/images/item.png" alt="" />
+                      <p>
+                        Erum vendis escime restionsequi aut audionetum dolor
+                        minci il inimo dis eum aceptae. Neque consequo ipis am
+                        dolum sinum exerror atempossit excersp ictio.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="title">Logistik & Koordination</div>
+                <button
+                  class="item-btn toggle-btn"
+                  aria-expanded="false"
+                  aria-controls="content-1"
+                  aria-label="Mostrar contenido"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <line
+                      class="icon-line line-horizontal"
+                      x1="3"
+                      y1="9"
+                      x2="15"
+                      y2="9"
+                    ></line>
+                    <line
+                      class="icon-line line-vertical"
+                      x1="9"
+                      y1="3"
+                      x2="9"
+                      y2="15"
+                    ></line>
+                  </svg>
+                </button>
+                <div class="item-content">
+                  <div class="content-wrap" id="content-1">
+                    <div class="contento">
+                      <img src="./assets/images/item.png" alt="" />
+                      <p>
+                        Erum vendis escime restionsequi aut audionetum dolor
+                        minci il inimo dis eum aceptae. Neque consequo ipis am
+                        dolum sinum exerror atempossit excersp ictio.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="title">Digitalkampagnen</div>
+                <button
+                  class="item-btn toggle-btn"
+                  aria-expanded="false"
+                  aria-controls="content-1"
+                  aria-label="Mostrar contenido"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <line
+                      class="icon-line line-horizontal"
+                      x1="3"
+                      y1="9"
+                      x2="15"
+                      y2="9"
+                    ></line>
+                    <line
+                      class="icon-line line-vertical"
+                      x1="9"
+                      y1="3"
+                      x2="9"
+                      y2="15"
+                    ></line>
+                  </svg>
+                </button>
+                <div class="item-content">
+                  <div class="content-wrap" id="content-1">
+                    <div class="contento">
+                      <img src="./assets/images/item.png" alt="" />
+                      <p>
+                        Erum vendis escime restionsequi aut audionetum dolor
+                        minci il inimo dis eum aceptae. Neque consequo ipis am
+                        dolum sinum exerror atempossit excersp ictio.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="title">Muster-Boxen</div>
+                <button
+                  class="item-btn toggle-btn"
+                  aria-expanded="false"
+                  aria-controls="content-1"
+                  aria-label="Mostrar contenido"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <line
+                      class="icon-line line-horizontal"
+                      x1="3"
+                      y1="9"
+                      x2="15"
+                      y2="9"
+                    ></line>
+                    <line
+                      class="icon-line line-vertical"
+                      x1="9"
+                      y1="3"
+                      x2="9"
+                      y2="15"
+                    ></line>
+                  </svg>
+                </button>
+                <div class="item-content">
+                  <div class="content-wrap" id="content-1">
+                    <div class="contento">
+                      <img src="./assets/images/item.png" alt="" />
+                      <p>
+                        Erum vendis escime restionsequi aut audionetum dolor
+                        minci il inimo dis eum aceptae. Neque consequo ipis am
+                        dolum sinum exerror atempossit excersp ictio.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="item">
+                <div class="title">Direct-Mailing</div>
+                <button
+                  class="item-btn toggle-btn"
+                  aria-expanded="false"
+                  aria-controls="content-1"
+                  aria-label="Mostrar contenido"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <line
+                      class="icon-line line-horizontal"
+                      x1="3"
+                      y1="9"
+                      x2="15"
+                      y2="9"
+                    ></line>
+                    <line
+                      class="icon-line line-vertical"
+                      x1="9"
+                      y1="3"
+                      x2="9"
+                      y2="15"
+                    ></line>
+                  </svg>
+                </button>
+                <div class="item-content">
+                  <div class="content-wrap" id="content-1">
+                    <div class="contento">
+                      <img src="./assets/images/item.png" alt="" />
+                      <p>
+                        Erum vendis escime restionsequi aut audionetum dolor
+                        minci il inimo dis eum aceptae. Neque consequo ipis am
+                        dolum sinum exerror atempossit excersp ictio.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="title">POS-Material</div>
+                <button
+                  class="item-btn toggle-btn"
+                  aria-expanded="false"
+                  aria-controls="content-1"
+                  aria-label="Mostrar contenido"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <line
+                      class="icon-line line-horizontal"
+                      x1="3"
+                      y1="9"
+                      x2="15"
+                      y2="9"
+                    ></line>
+                    <line
+                      class="icon-line line-vertical"
+                      x1="9"
+                      y1="3"
+                      x2="9"
+                      y2="15"
+                    ></line>
+                  </svg>
+                </button>
+                <div class="item-content">
+                  <div class="content-wrap" id="content-1">
+                    <div class="contento">
+                      <img src="./assets/images/item.png" alt="" />
+                      <p>
+                        Erum vendis escime restionsequi aut audionetum dolor
+                        minci il inimo dis eum aceptae. Neque consequo ipis am
+                        dolum sinum exerror atempossit excersp ictio.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="title">Display Ads</div>
+                <button
+                  class="item-btn toggle-btn"
+                  aria-expanded="false"
+                  aria-controls="content-1"
+                  aria-label="Mostrar contenido"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <line
+                      class="icon-line line-horizontal"
+                      x1="3"
+                      y1="9"
+                      x2="15"
+                      y2="9"
+                    ></line>
+                    <line
+                      class="icon-line line-vertical"
+                      x1="9"
+                      y1="3"
+                      x2="9"
+                      y2="15"
+                    ></line>
+                  </svg>
+                </button>
+                <div class="item-content">
+                  <div class="content-wrap" id="content-1">
+                    <div class="contento">
+                      <img src="./assets/images/item.png" alt="" />
+                      <p>
+                        Erum vendis escime restionsequi aut audionetum dolor
+                        minci il inimo dis eum aceptae. Neque consequo ipis am
+                        dolum sinum exerror atempossit excersp ictio.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="title">Produkt-Display</div>
+                <button
+                  class="item-btn toggle-btn"
+                  aria-expanded="false"
+                  aria-controls="content-1"
+                  aria-label="Mostrar contenido"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <line
+                      class="icon-line line-horizontal"
+                      x1="3"
+                      y1="9"
+                      x2="15"
+                      y2="9"
+                    ></line>
+                    <line
+                      class="icon-line line-vertical"
+                      x1="9"
+                      y1="3"
+                      x2="9"
+                      y2="15"
+                    ></line>
+                  </svg>
+                </button>
+                <div class="item-content">
+                  <div class="content-wrap" id="content-1">
+                    <div class="contento">
+                      <img src="./assets/images/item.png" alt="" />
+                      <p>
+                        Erum vendis escime restionsequi aut audionetum dolor
+                        minci il inimo dis eum aceptae. Neque consequo ipis am
+                        dolum sinum exerror atempossit excersp ictio.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="cont02-02-button">Call vereinbaren</button>
+        </section>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 57 7.99"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon points="0,8 57,0 57,8" class="triangulo3" />
+        </svg>
+        <div class="cont03 bg-dark font-primary">
+          <div class="cont03-01">
+            <h2 data-aos="fade" data-aos-duration="2000">
+              schrittmacher ist ein bureau für Kommunikation, das Sie bei allen
+              Aspekten Ihrer Projekte unterstützt. Wir verbinden Kreativität und
+              Reaktivität, um Ihnen relevante und schnelle Lösungen anzubieten,
+              mit denen Sie Ihre Geschäftsziele erreichen und damit Sie sich
+            </h2>
+          </div>
+        </div>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 57 7.99"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon points="0,0 57,0 0,8" class="triangulo3" />
+        </svg>
+        <section class="cont04 font-dark">
+          <h2 class="cont04-01">
+            Partner vom bureau schrittmacher. Neque
+            <span class="antiqua-italic" style="font-weight: 600"
+              >consequo ipis</span
+            >
+            am dolum sinum exerror atempossit excersp ictio.
+          </h2>
+          <div class="cont04-02" data-aos="fade" data-aos-duration="1000">
+            <img src="./assets/images/firmas.png" alt="" />
+          </div>
+        </section>
+
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 57 7.99"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon points="0,8 57,0 57,8" class="triangulo" />
+        </svg>
+        <div class="paco bg-white">
+          <section class="cont05 font-hell">
+            <h2 class="cont05-01" data-aos="fade-up" data-aos-duration="1000">
+              Design case neque consequo ipis am dolum sinum exerror atempossit
+              excersp ictio.
+            </h2>
+            <div class="cont05-02" data-aos="fade" data-aos-duration="1000">
+              <div class="slide">
+                <div class="slide_img"></div>
+                <h3 class="slide_title">POS-Display</h3>
+                <p class="slide_text font-primary">
+                  neque consequo ipis am dolum sinum exerror atempossit excersp
+                  ictio
+                </p>
+              </div>
+              <div class="slide">
+                <div class="slide_img"></div>
+                <h3 class="slide_title">POS-Display</h3>
+                <p class="slide_text font-primary">
+                  neque consequo ipis am dolum sinum exerror atempossit excersp
+                  ictio
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+        <svg
+          class="svg2"
+          width="100%"
+          height="100%"
+          viewBox="0 0 57 7.99"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon points="0,0 57,0 0,8" class="triangulo2" />
+        </svg>
+        <div class="paco2 bg-dark">
+          <section class="cont06 font-primary">
+            <h2 class="cont06-01">
+              Ribusant, core, conet aut esed eosandio. Es non et represt, ea cor
+              rerchitam. Und das seit 25 Jahren.
+            </h2>
+            <div
+              class="responsive-tilt"
+              data-aos="fade-right"
+              data-aos-duration="2000"
+            >
+              <img class="lozy" data-src="./assets/images/2.jpg" alt="" />
+            </div>
+            <div
+              class="cont06-02"
+              data-aos="fade-left"
+              data-aos-duration="1000"
+            >
+              <p class="cont06-02-p">
+                Erum vendis escime restionsequi aut audionetum dolor minci il
+                inimo dis eum aceptae. Neque consequo ipis am dolum sinum
+                exerror atempossit excersp ictio. Nulluptatium quunt etur aut
+                volore nonsequiam.
+              </p>
+              <img
+                src="./assets/images/item.png"
+                class="cont06-02-img"
+                alt=""
+              />
+              <button class="cont06-02-button">Schreiben Sie uns!</button>
+            </div>
+          </section>
+          <div style="height: 14vw">
+            <hr class="sep4" />
+          </div>
+        </div>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 57 7.99"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon points="0,0 57,0 0,8" class="triangulo3" />
+        </svg>
+      </div>
+
+      <style></style>
     </main>
 
     <footer role="contentinfo">
       <p>© <span id="year"></span> schrittmacher</p>
-      <a href="#" style="color: inherit; text-decoration: underline"
-        >Política de privacidad</a
-      >
+      <a href="#" style="color: inherit; text-decoration: underline"></a>
     </footer>
 
     <script src="./assets/js/year.js"></script>
@@ -151,6 +723,15 @@
     <script src="./assets/js/logo_color.js"></script>
     <script src="./assets/js/video-hero.js"></script>
     <!--     <script src="./assets/js/inclination_2.js"></script>
+
  -->
+    <script src="./assets/js/menu.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="./assets/js/lazy.js"></script>
+    <script src="./assets/js/items.js"></script>
+    <script src="./assets/js/lozy.js"></script>
+    <script>
+      AOS.init();
+    </script>
   </body>
 </html>

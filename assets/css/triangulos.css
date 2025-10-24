@@ -1,0 +1,53 @@
+.triangulo {
+  fill: #260073; /* Cambia este color según sea necesario */
+}
+.svg2 {
+  background-color: #ff0051;
+}
+.triangulo2 {
+  fill: #260073; /* Cambia este color según sea necesario */
+}
+.triangulo3 {
+  fill: #ff0051; /* Cambia este color según sea necesario */
+}
+.sep {
+  border: 0;
+  height: 1px; /* grosor visible */
+  width: 100%; /* largo de la línea */
+  background: rgb(248, 250, 248);
+  transform-origin: center center; /* Define el punto de rotación */
+  transform: rotate(-7.96deg); /* ángulo fijo */
+  position: relative;
+  top: 50%;
+}
+.container {
+  width: 100%; /* Ancho del contenedor */
+  display: grid;
+  height: auto; /* Altura del contenedor */ /* Tres filas: dos para los triángulos y una para el div */
+}
+.paco {
+  background-color: #260073; /* Cambia este color según sea necesario */
+}
+.paco2 {
+  background-color: #ff0051; /* Cambia este color según sea necesario */
+}
+.sep3 {
+  border: 0;
+  height: 1px; /* grosor visible */
+  width: 100%; /* largo de la línea */
+  background: var(--color-accent-2);
+  transform-origin: center center; /* Define el punto de rotación */
+  transform: rotate(-7.96deg); /* ángulo fijo */
+  max-width: var(--max-width-large);
+  margin: 5vw auto;
+}
+.sep4 {
+  border: 0;
+  height: 1px; /* grosor visible */
+  width: 100%; /* largo de la línea */
+  background: var(--color-primary);
+  transform-origin: center center; /* Define el punto de rotación */
+  transform: rotate(-7.96deg); /* ángulo fijo */
+  max-width: var(--max-width-large);
+  margin: 1vw auto;
+}

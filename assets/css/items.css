@@ -1,0 +1,75 @@
+.item {
+  padding: 10px;
+  margin: 8px 0;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  column-gap: 1vw;
+  grid-template-rows: min-content auto;
+  z-index: 999999;
+}
+
+.item-content {
+  grid-column: 1 / 4;
+  grid-row: 2 /3;
+}
+
+.item-content p {
+  font-size: calc(clamp(24px, 4.1vw, 74.5px) / 4);
+}
+.toggle-btn {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  width: 1.2vw;
+  height: 1.2vw;
+  align-items: flex-start;
+  align-self: center;
+  border: none;
+
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  user-select: none;
+
+  transition: transform 180ms ease, background 150ms;
+}
+
+.title {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  font-size: calc(clamp(24px, 4.1vw, 74.5px) / 3);
+  font-weight: 900;
+  align-items: flex-start;
+  align-self: center;
+}
+
+.content-wrap {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 300ms ease, opacity 200ms ease;
+}
+.contento {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 2vw;
+}
+/* estados SVG */
+.icon-line {
+  stroke: var(--color-accent-2);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+
+.item.expanded .toggle-btn {
+  transform: rotate(0deg);
+}
+.item.expanded .content-wrap {
+  opacity: 1;
+}
+
+/* Al expandir: rotar la línea vertical para ocultarla (convertir + en −) */
+.item.expanded .line-vertical {
+  opacity: 0;
+}
