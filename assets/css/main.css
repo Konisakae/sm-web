@@ -34,6 +34,7 @@
 :root {
   --color-primary: #fff; /* White background */
   --color-secondary: #000; /* Black accents */
+  --color-tertiary: #fafaf6; /* Light gray background */
   --color-accent-1: #ff0051; /* Pink accents */
   --color-accent-2: #260073; /* Darker pink links/buttons */
 
@@ -43,8 +44,8 @@
   --font-grotesk-line: 1.4;
 
   --padding-content: clamp(1rem, 6vw, 5rem);
-  --max-width-normal: 1600px;
-  --max-width-large: 2000px;
+  --max-width-normal: 1200px;
+  --max-width-large: 1800px;
   --width-padding: calc(100vw - var(--padding-content) * 2);
 
   --radius: 8px;
@@ -61,7 +62,7 @@ body {
     var(--font-grotesk-family);
   line-height: 1.5;
   color: var(--color-secondary);
-  background: var(--color-primary);
+  background: var(--color-tertiary);
   font-size: 16px;
   font-weight: 400;
   margin: 0;
@@ -475,7 +476,7 @@ svg {
 /* Content blocks */
 main,
 footer {
-  background: var(--color-primary);
+  background: var(--color-tertiary);
   padding: 5rem 0;
   border-radius: var(--radius);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
